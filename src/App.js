@@ -1,23 +1,25 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState, useEffect } from "react";
 
 function App() {
+  const [starWarsData, setStarWarsData] = useState({});
+  const [count, setCount] = useState(1);
+
+  useEffect(() => {
+    fetch(`https://swapi.dev/api/people/${count}`)
+      .then((res) => res.json())
+      .then((data) => setStarWarsData(data));
+  }, [count]);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <button onClick={() => setCount((prevCount) => prevCount - 1)}>
+        Previous
+      </button>
+      <h2>Source id: {count}</h2>
+      <button onClick={() => setCount((prevCount) => prevCount + 1)}>
+        Next
+      </button>
+      <pre>{JSON.stringify(starWarsData, null, 2)}</pre>
     </div>
   );
 }
